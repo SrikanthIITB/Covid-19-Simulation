@@ -1,4 +1,5 @@
 
+import time
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
@@ -15,6 +16,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 # Define app
 app = dash.Dash(__name__, meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"}], external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
+
 map_fig = px.scatter_mapbox(df, lat="lat", lon="lon", hover_name="City", hover_data=["State", "Population"],color_discrete_sequence=["red"], zoom=4)
 map_fig.update_layout(mapbox_style="open-street-map")
 map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
@@ -114,12 +116,12 @@ app.layout = dbc.Container(
                         controls,
                         dbc.Card(
                             body=True,
-                                style={"background": "#FFFFFF","margin-top": 5},
+                                style={'height':'180px',"background": "#FFFFFF","margin-top": 5},
                             children=[
                                 dbc.FormGroup(
                                     [
                                         dcc.Graph(id="summarized-content",
-                                        style={"background": "#7FDBFF","width": "100%","height": "calc(75vh - 330px)"})
+                                        style={'height':'150px',"background": "#7FDBFF","width": "100%"})
                                     ]
                                 )
                             ],
@@ -131,13 +133,13 @@ app.layout = dbc.Container(
                     children=[
                         dbc.Card(
                             body=True,
-                                style={"background": "#7FDBFF"},
+                                style={"height": "330px","background": "#7FDBFF"},
                             children=[
                                 dbc.FormGroup(
                                     [
                                         dcc.Graph( figure=map_fig,
                                                    id="map-fig",
-                                                   style={"height": "45vh"},)
+                                                   style={"height": "300px"},)
                                     ]
                                 )
                             ],
@@ -158,6 +160,9 @@ app.layout = dbc.Container(
     ],
 )
 def summarize(n_clicks):
+    t0 = time.time()
+    t1 = time.time()
+    time_taken = f"Processed in {t1-t0:.2f}s"
     if n_clicks%2 == 0:
         return 'success','warning','danger'
     else:
@@ -166,4 +171,3 @@ def summarize(n_clicks):
 
 if __name__ == "__main__":
     app.run_server(debug=False, use_reloader=False)
-

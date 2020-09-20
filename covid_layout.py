@@ -1,5 +1,4 @@
 
-import time
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
@@ -159,9 +158,6 @@ app.layout = dbc.Container(
     ],
 )
 def summarize(n_clicks):
-    t0 = time.time()
-    t1 = time.time()
-    time_taken = f"Processed in {t1-t0:.2f}s"
     if n_clicks%2 == 0:
         return 'success','warning','danger'
     else:
